@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{0973B94E-8055-412F-8E22-310226D70719}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{0973B94E-8055-412F-8E22-310226D70719}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{365C2B3A-07F7-4118-8FB5-07644981CD41}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{365C2B3A-07F7-4118-8FB5-07644981CD41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".git", ".git", "{40DCB483-D972-4DC6-BD60-ED809064CCD5}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assembly.Standard", "source
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assembly.Standard.Performance.Tests", "tests\Assembly.Standard.Performance.Tests\Assembly.Standard.Performance.Tests.csproj", "{EFD53E50-0353-4E61-8ACD-7F1E41B5BA91}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CFC48CCE-58F5-40FA-B11B-FF262D6AF05B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{CFC48CCE-58F5-40FA-B11B-FF262D6AF05B}"
 	ProjectSection(SolutionItems) = preProject
 		build\build.cake = build\build.cake
 		build\build.ps1 = build\build.ps1

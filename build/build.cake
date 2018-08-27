@@ -1,4 +1,7 @@
+#addin "nuget:?package=Cake.Incubator&version=3.0.0"
+
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -10,8 +13,12 @@ var configuration = Argument("configuration", "Release");
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
+// Solution
+var solutionDirPath = "./src/Example.sln";
+var solutionDir = Directory("../MesuredAssembly.sln");
+
 // Define directories.
-var buildDir = Directory("./src/Example/bin") + Directory(configuration);
+var buildDir = Directory("../src/Example/bin") + Directory(configuration);
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -23,33 +30,30 @@ Task("Clean")
     CleanDirectory(buildDir);
 });
 
-Task("Restore-NuGet-Packages")
-    .IsDependentOn("Clean")
+Task("RestoreNuGetPackages")
     .Does(() =>
 {
-    NuGetRestore("./src/Example.sln");
+    NuGetRestore(solutionDirPath);
 });
 
 Task("Build")
-    .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
     if(IsRunningOnWindows())
     {
       // Use MSBuild
-      MSBuild("./src/Example.sln", settings =>
+      MSBuild(solutionDirPath, settings =>
         settings.SetConfiguration(configuration));
     }
     else
     {
       // Use XBuild
-      XBuild("./src/Example.sln", settings =>
+      XBuild(solutionDirPath, settings =>
         settings.SetConfiguration(configuration));
     }
 });
 
-Task("Run-Unit-Tests")
-    .IsDependentOn("Build")
+Task("RunUnitTests")
     .Does(() =>
 {
     NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
@@ -62,10 +66,14 @@ Task("Run-Unit-Tests")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Unit-Tests");
+    .IsDependentOn("Clean")
+    .IsDependentOn("RestoreNuGetPackages")
+    .IsDependentOn("Build")
+    .IsDependentOn("RunUnitTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
 RunTarget(target);
+a

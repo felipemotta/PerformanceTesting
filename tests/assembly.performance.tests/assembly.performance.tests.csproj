@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
+    <AssemblyName>DevExperience.Assembly.Performance.Tests</AssemblyName>
+    <RootNamespace>DevExperience.Assembly.Performance.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">

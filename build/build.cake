@@ -58,7 +58,6 @@ Task("Build")
 			Verbosity = Verbosity.Minimal,
 			ToolVersion =  MSBuildToolVersion.VS2017,
 			Configuration = configuration,
-			PlatformTarget = PlatformTarget.MSIL,
 			MSBuildPlatform = MSBuildPlatform.Automatic,
 			WorkingDirectory = projectRootPath.FullPath
 		};

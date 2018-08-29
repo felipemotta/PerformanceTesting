@@ -1,6 +1,4 @@
-#addin "nuget:?package=Cake.Incubator&version=3.0.0"
-
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#addin nuget:?package=Cake.Incubator&version=3.0.0
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -13,12 +11,20 @@ var configuration = Argument("configuration", "Release");
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
-// Solution
-var solutionDirPath = "./src/Example.sln";
-var solutionDir = Directory("../MesuredAssembly.sln");
+DirectoryPath projectRootPath;
+SolutionParserResult solutionParserResult;
 
-// Define directories.
-var buildDir = Directory("../src/Example/bin") + Directory(configuration);
+Setup(context =>
+{
+    projectRootPath = MakeAbsolute(Directory(".."));
+    IEnumerable<string> solutionsFoundPaths = System.IO.Directory.GetFiles(projectRootPath.FullPath, "*.sln");
+    if (solutionsFoundPaths.Count() != 1)
+    {
+        throw new CakeException("None Solution or multiple solutions were found.");
+    }
+
+    solutionParserResult = ParseSolution(solutionsFoundPaths.Single());
+});
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -27,38 +33,44 @@ var buildDir = Directory("../src/Example/bin") + Directory(configuration);
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectory(buildDir);
+    CleanDirectory(System.IO.Path.Combine(projectRootPath.FullPath, "packages"));
+    CleanDirectory(System.IO.Path.Combine(projectRootPath.FullPath, "testresults"));
+
+    // Clean projects outputs
+    IEnumerable<SolutionProject> solutionProjects = solutionParserResult.GetProjects();
+    foreach (SolutionProject solutionProject in solutionProjects)
+    {
+        CleanDirectory(System.IO.Path.Combine(solutionProject.Path.GetDirectory().FullPath, "bin"));
+        CleanDirectory(System.IO.Path.Combine(solutionProject.Path.GetDirectory().FullPath, "obj"));
+    }
 });
 
-Task("RestoreNuGetPackages")
+Task("NuGet")
     .Does(() =>
 {
-    NuGetRestore(solutionDirPath);
+    NuGetRestore(projectRootPath.FullPath);
 });
 
 Task("Build")
     .Does(() =>
 {
-    if(IsRunningOnWindows())
-    {
-      // Use MSBuild
-      MSBuild(solutionDirPath, settings =>
-        settings.SetConfiguration(configuration));
-    }
-    else
-    {
-      // Use XBuild
-      XBuild(solutionDirPath, settings =>
-        settings.SetConfiguration(configuration));
-    }
+    var msBuildSettings = new MSBuildSettings {
+			Verbosity = Verbosity.Minimal,
+			ToolVersion =  MSBuildToolVersion.VS2017,
+			Configuration = configuration,
+			PlatformTarget = PlatformTarget.MSIL,
+			MSBuildPlatform = MSBuildPlatform.Automatic,
+			WorkingDirectory = projectRootPath.FullPath
+		};
+
+		msBuildSettings.WithTarget("Build");
+
+		MSBuild(projectRootPath.FullPath, msBuildSettings);
 });
 
-Task("RunUnitTests")
+Task("Tests")
     .Does(() =>
 {
-    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
-        });
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -67,13 +79,12 @@ Task("RunUnitTests")
 
 Task("Default")
     .IsDependentOn("Clean")
-    .IsDependentOn("RestoreNuGetPackages")
+    .IsDependentOn("NuGet")
     .IsDependentOn("Build")
-    .IsDependentOn("RunUnitTests");
+    .IsDependentOn("Tests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
 RunTarget(target);
-a

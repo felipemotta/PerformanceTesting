@@ -77,10 +77,10 @@ Task("Tests")
 {
     var settings = new VSTestSettings
     {
-        // https://github.com/cake-build/cake/issues/2077
         #tool Microsoft.TestPlatform
         ToolPath = Context.Tools.Resolve("vstest.console.exe")
     };
+    
     var list = new List<FilePath>();
     foreach (CustomProjectParserResult testProject in testProjects)
     {
@@ -91,24 +91,6 @@ Task("Tests")
             VSTest(outputPath.FullPath  + "/*.tests.dll", settings);
         }
     }
-    // var settings = new MSTestSettings()
-    // {
-    //     NoIsolation = false,
-    //     ArgumentCustomization = args => args
-    //                                 .Append("/detail:errormessage")
-    //                                 .Append("/resultsfile:TestResults.trx"),
-    // };    
-
-    // var list = new List<FilePath>();
-    // foreach (CustomProjectParserResult testProject in testProjects)
-    // {
-    //     Information("Running '{0}' project ...", testProject.AssemblyName);
-    //     foreach(var outputPath in testProject.OutputPaths)
-    //     {
-    //         Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
-    //         MSTest(outputPath.FullPath  + "/*.tests.dll", settings);
-    //     }
-    // }
 });
 
 Task("DotNetTests")

@@ -1,4 +1,5 @@
 #addin nuget:?package=Cake.Incubator&version=3.0.0
+#tool nuget:?package=Microsoft.TestPlatform&version=15.8.0
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -13,6 +14,7 @@ var configuration = Argument("configuration", "Release");
 
 DirectoryPath projectRootPath;
 SolutionParserResult solutionParserResult;
+IEnumerable<CustomProjectParserResult> testProjects;
 
 Setup(context =>
 {
@@ -24,6 +26,11 @@ Setup(context =>
     }
 
     solutionParserResult = ParseSolution(solutionsFoundPaths.Single());
+
+    testProjects = solutionParserResult
+        .GetProjects()
+        .Select(p => ParseProject(p.Path, configuration: configuration))
+        .Where(cp => cp.IsTestProject());
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -35,10 +42,7 @@ Task("Clean")
 {
     CleanDirectory(System.IO.Path.Combine(projectRootPath.FullPath, "packages"));
     CleanDirectory(System.IO.Path.Combine(projectRootPath.FullPath, "testresults"));
-
-    // Clean projects outputs
-    IEnumerable<SolutionProject> solutionProjects = solutionParserResult.GetProjects();
-    foreach (SolutionProject solutionProject in solutionProjects)
+    foreach (SolutionProject solutionProject in solutionParserResult.GetProjects())
     {
         CleanDirectory(System.IO.Path.Combine(solutionProject.Path.GetDirectory().FullPath, "bin"));
         CleanDirectory(System.IO.Path.Combine(solutionProject.Path.GetDirectory().FullPath, "obj"));
@@ -54,22 +58,74 @@ Task("NuGet")
 Task("Build")
     .Does(() =>
 {
-    var msBuildSettings = new MSBuildSettings {
-			Verbosity = Verbosity.Minimal,
-			ToolVersion =  MSBuildToolVersion.VS2017,
-			Configuration = configuration,
-			MSBuildPlatform = MSBuildPlatform.Automatic,
-			WorkingDirectory = projectRootPath.FullPath
-		};
+    var msBuildSettings = new MSBuildSettings 
+    {
+        Verbosity = Verbosity.Minimal,
+        ToolVersion =  MSBuildToolVersion.VS2017,
+        Configuration = configuration,
+        MSBuildPlatform = MSBuildPlatform.Automatic,
+        WorkingDirectory = projectRootPath.FullPath
+    };
 
-		msBuildSettings.WithTarget("Build");
+    msBuildSettings.WithTarget("Build");
 
-		MSBuild(projectRootPath.FullPath, msBuildSettings);
+    MSBuild(projectRootPath.FullPath, msBuildSettings);
 });
 
 Task("Tests")
     .Does(() =>
 {
+    var settings = new VSTestSettings
+    {
+        // https://github.com/cake-build/cake/issues/2077
+        #tool Microsoft.TestPlatform
+        ToolPath = Context.Tools.Resolve("vstest.console.exe")
+    };
+    var list = new List<FilePath>();
+    foreach (CustomProjectParserResult testProject in testProjects)
+    {
+        Information("Running '{0}' project ...", testProject.AssemblyName);
+        foreach(var outputPath in testProject.OutputPaths)
+        {
+            Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
+            VSTest(outputPath.FullPath  + "/*.tests.dll", settings);
+        }
+    }
+    // var settings = new MSTestSettings()
+    // {
+    //     NoIsolation = false,
+    //     ArgumentCustomization = args => args
+    //                                 .Append("/detail:errormessage")
+    //                                 .Append("/resultsfile:TestResults.trx"),
+    // };    
+
+    // var list = new List<FilePath>();
+    // foreach (CustomProjectParserResult testProject in testProjects)
+    // {
+    //     Information("Running '{0}' project ...", testProject.AssemblyName);
+    //     foreach(var outputPath in testProject.OutputPaths)
+    //     {
+    //         Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
+    //         MSTest(outputPath.FullPath  + "/*.tests.dll", settings);
+    //     }
+    // }
+});
+
+Task("DotNetTests")
+    .Does(() =>
+{
+    var settings = new DotNetCoreTestSettings()
+    {
+        Configuration = configuration,
+        Verbosity = DotNetCoreVerbosity.Minimal,
+        ArgumentCustomization = args => args.Append("--no-restore"),
+    };    
+
+    foreach (CustomProjectParserResult testProject in testProjects)
+    {
+        Information("Running '{0}' project ...", testProject.AssemblyName);
+        DotNetCoreTest(testProject.ProjectFilePath.FullPath, settings);
+    }
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -80,7 +136,8 @@ Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("NuGet")
     .IsDependentOn("Build")
-    .IsDependentOn("Tests");
+    .IsDependentOn("Tests")
+    .IsDependentOn("DotNetTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

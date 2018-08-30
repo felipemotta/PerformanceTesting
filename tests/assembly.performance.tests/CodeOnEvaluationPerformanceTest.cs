@@ -15,6 +15,7 @@
             
             // Act
             Action notimplemented = () => testee.Method();
+
             // Assert
             notimplemented.Should().Throw<NotImplementedException>();
         }

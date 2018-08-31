@@ -84,10 +84,9 @@ Task("Tests")
     var list = new List<FilePath>();
     foreach (CustomProjectParserResult testProject in testProjects)
     {
-        Information("Running '{0}' project ...", testProject.AssemblyName);
         foreach(var outputPath in testProject.OutputPaths)
         {
-            Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
+            Information("Running '{0}' project ...", outputPath.FullPath  + "/*.tests.dll");
             VSTest(outputPath.FullPath  + "/*.tests.dll", settings);
         }
     }

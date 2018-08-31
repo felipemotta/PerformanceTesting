@@ -86,8 +86,9 @@ Task("Tests")
     {
         foreach(var outputPath in testProject.OutputPaths)
         {
-            Information("Running '{0}' project ...", outputPath.FullPath  + "/*.tests.dll");
-            VSTest(outputPath.FullPath  + "/*.tests.dll", settings);
+            var testAssembly = outputPath.FullPath  + "/*.tests.dll";
+            Information("Running '{0}' project ...", testAssembly);
+            VSTest(testAssembly, settings);
         }
     }
 });

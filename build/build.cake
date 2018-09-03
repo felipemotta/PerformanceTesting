@@ -1,5 +1,7 @@
 #addin nuget:?package=Cake.Incubator&version=3.0.0
+
 #tool nuget:?package=Microsoft.TestPlatform&version=15.8.0
+#tool nuget:?package=TestRunner&version=1.7.1
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -72,6 +74,21 @@ Task("Build")
     MSBuild(projectRootPath.FullPath, msBuildSettings);
 });
 
+Task("TestRunnerTests")
+    .Does(() =>
+{    
+    var list = new List<FilePath>();
+    foreach (CustomProjectParserResult testProject in testProjects)
+    {
+        Information("Running '{0}' project ...", testProject.AssemblyName);
+        foreach(var outputPath in testProject.OutputPaths)
+        {
+            Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
+            // TODO: Run test using test runner --> outputPath.FullPath  + "/*.tests.dll"
+        }
+    }
+});
+
 Task("Tests")
     .Does(() =>
 {
@@ -81,10 +98,8 @@ Task("Tests")
         ToolPath = Context.Tools.Resolve("vstest.console.exe")
     };
     
-    var list = new List<FilePath>();
     foreach (CustomProjectParserResult testProject in testProjects)
     {
-        Information("Running '{0}' project ...", testProject.AssemblyName);
         foreach(var outputPath in testProject.OutputPaths)
         {
             Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");

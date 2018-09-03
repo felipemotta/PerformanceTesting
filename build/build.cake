@@ -74,36 +74,35 @@ Task("Build")
     MSBuild(projectRootPath.FullPath, msBuildSettings);
 });
 
-Task("TestRunnerTests")
+Task("Mono")
     .Does(() =>
 {    
-    var list = new List<FilePath>();
+    ProcessArgumentBuilder arguments = new ProcessArgumentBuilder();
+    arguments.Append(Context.Tools.Resolve("testrunner.exe").FullPath);
+    
     foreach (CustomProjectParserResult testProject in testProjects)
     {
-        Information("Running '{0}' project ...", testProject.AssemblyName);
-        foreach(var outputPath in testProject.OutputPaths)
+        foreach(string outputPath in testProject.OutputPaths.Select(dp => System.IO.Path.Combine(dp.FullPath, testProject.AssemblyName + ".dll")))
         {
-            Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
-            // TODO: Run test using test runner --> outputPath.FullPath  + "/*.tests.dll"
+            Information("Running '{0}' output ...", outputPath);
+            arguments.Append(outputPath);
         }
     }
+
+    StartProcess(Context.Tools.Resolve("mono.exe"), new ProcessSettings { Arguments = arguments });
+
 });
 
 Task("Tests")
     .Does(() =>
 {
-    var settings = new VSTestSettings
-    {
-        #tool Microsoft.TestPlatform
-        ToolPath = Context.Tools.Resolve("vstest.console.exe")
-    };
-    
+    var settings = new VSTestSettings { ToolPath = Context.Tools.Resolve("vstest.console.exe") };
     foreach (CustomProjectParserResult testProject in testProjects)
     {
-        foreach(var outputPath in testProject.OutputPaths)
+        foreach(string outputPath in testProject.OutputPaths.Select(dp => System.IO.Path.Combine(dp.FullPath, "*.tests.dll")))
         {
-            Information("Running '{0}' output ...", outputPath.FullPath  + "/*.tests.dll");
-            VSTest(outputPath.FullPath  + "/*.tests.dll", settings);
+            Information("Running '{0}' output ...", outputPath);
+            VSTest(outputPath, settings);
         }
     }
 });
@@ -134,7 +133,8 @@ Task("Default")
     .IsDependentOn("NuGet")
     .IsDependentOn("Build")
     .IsDependentOn("Tests")
-    .IsDependentOn("DotNetTests");
+    .IsDependentOn("DotNetTests")
+    .IsDependentOn("Mono");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

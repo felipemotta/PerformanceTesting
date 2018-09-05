@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{CFC48CCE
 		build\build.cake = build\build.cake
 		build\build.ps1 = build\build.ps1
 		build\build.sh = build\build.sh
+		build\cake.config = build\cake.config
 		build\utilities.cake = build\utilities.cake
 	EndProjectSection
 EndProject

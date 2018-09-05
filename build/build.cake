@@ -148,7 +148,8 @@ Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("NuGet")
     .IsDependentOn("DotNetBuild")
-    .IsDependentOn("DotNetTests");
+    .IsDependentOn("DotNetTests")
+    .IsDependentOn("MonoTests");
 
 Task("Linux")
     .IsDependentOn("Clean")

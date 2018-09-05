@@ -1,5 +1,7 @@
 #addin nuget:?package=Cake.Incubator&version=3.0.0
+
 #tool nuget:?package=Microsoft.TestPlatform&version=15.8.0
+#tool nuget:?package=TestRunner&version=1.7.1
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -55,7 +57,60 @@ Task("NuGet")
     NuGetRestore(projectRootPath.FullPath);
 });
 
-Task("Build")
+Task("DotNetBuild")
+    .Does(() =>
+{
+    var settings = new DotNetCoreBuildSettings()
+    {
+        Configuration = configuration,
+        Verbosity = DotNetCoreVerbosity.Minimal,
+        ArgumentCustomization = args => args.Append("--no-restore"),
+    };
+
+    DotNetCoreBuild(projectRootPath.FullPath, settings);
+});
+
+Task("DotNetTests")
+    .Does(() =>
+{
+    foreach (CustomProjectParserResult testProject in testProjects)
+    {
+        foreach(var targetFramework in testProject.TargetFrameworkVersions)
+        {
+            DotNetCoreTest(testProject.ProjectFilePath.FullPath, new DotNetCoreTestSettings()
+            {
+                Configuration = configuration,
+                Verbosity = DotNetCoreVerbosity.Minimal,
+                NoBuild = true,
+                Framework = targetFramework,
+                OutputDirectory = System.IO.Path.Combine(testProject.ProjectFilePath.GetDirectory().FullPath, "bin", configuration, targetFramework),
+                ArgumentCustomization = args => args.Append("--no-restore"),
+            });
+        }
+    }
+});
+
+Task("MonoTests")
+    .Does(() =>
+{    
+    ProcessArgumentBuilder arguments = new ProcessArgumentBuilder();
+    arguments.Append(Context.Tools.Resolve("testrunner.exe").FullPath);
+    foreach (CustomProjectParserResult testProject in testProjects)
+    {        
+        var projectDirectory = testProject.ProjectFilePath.GetDirectory();
+        var runtimeFrameworks = testProject.TargetFrameworkVersions.Where(x => System.Text.RegularExpressions.Regex.IsMatch(x, @"net\d{2}\d?$"));
+        var testAssembles = runtimeFrameworks
+            .Select(framework => System.IO.Path.Combine(projectDirectory.FullPath, "bin", configuration, framework, testProject.AssemblyName + ".dll"));
+        foreach(string testFilePath in testAssembles)
+        {
+            arguments.Append(testFilePath);
+        }
+    }
+
+    StartProcess(Context.Tools.Resolve("mono.exe"), new ProcessSettings { Arguments = arguments });
+});
+
+Task("MSBuild")
     .Does(() =>
 {
     var msBuildSettings = new MSBuildSettings 
@@ -72,41 +127,16 @@ Task("Build")
     MSBuild(projectRootPath.FullPath, msBuildSettings);
 });
 
-Task("Tests")
+Task("VsTests")
     .Does(() =>
 {
-    var settings = new VSTestSettings
-    {
-        #tool Microsoft.TestPlatform
-        ToolPath = Context.Tools.Resolve("vstest.console.exe")
-    };
-    
-    var list = new List<FilePath>();
+    var settings = new VSTestSettings { ToolPath = Context.Tools.Resolve("vstest.console.exe") };
     foreach (CustomProjectParserResult testProject in testProjects)
     {
-        foreach(var outputPath in testProject.OutputPaths)
+        foreach(string outputPath in testProject.OutputPaths.Select(dp => System.IO.Path.Combine(dp.FullPath, "*.tests.dll")))
         {
-            var testAssembly = outputPath.FullPath  + "/*.tests.dll";
-            Information("Running '{0}' project ...", testAssembly);
-            VSTest(testAssembly, settings);
+            VSTest(outputPath, settings);
         }
-    }
-});
-
-Task("DotNetTests")
-    .Does(() =>
-{
-    var settings = new DotNetCoreTestSettings()
-    {
-        Configuration = configuration,
-        Verbosity = DotNetCoreVerbosity.Minimal,
-        ArgumentCustomization = args => args.Append("--no-restore"),
-    };    
-
-    foreach (CustomProjectParserResult testProject in testProjects)
-    {
-        Information("Running '{0}' project ...", testProject.AssemblyName);
-        DotNetCoreTest(testProject.ProjectFilePath.FullPath, settings);
     }
 });
 
@@ -117,9 +147,21 @@ Task("DotNetTests")
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("NuGet")
-    .IsDependentOn("Build")
-    .IsDependentOn("Tests")
+    .IsDependentOn("DotNetBuild")
     .IsDependentOn("DotNetTests");
+
+Task("Linux")
+    .IsDependentOn("Clean")
+    .IsDependentOn("NuGet")
+    .IsDependentOn("DotNetBuild")
+    .IsDependentOn("DotNetTests")
+    .IsDependentOn("MonoTests");
+
+Task("Microsoft")
+    .IsDependentOn("Clean")
+    .IsDependentOn("NuGet")
+    .IsDependentOn("MsBuild")
+    .IsDependentOn("VsTests");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

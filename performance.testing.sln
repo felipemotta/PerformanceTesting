@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assembly.performance.tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assembly.appdomain", "source\assembly.appdomain\assembly.appdomain.csproj", "{2F5F221F-A030-4416-9936-03CAAEE9C84C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "performance.tests.utilities", "tests\performance.tests.utilities\performance.tests.utilities.csproj", "{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{2F5F221F-A030-4416-9936-03CAAEE9C84C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F5F221F-A030-4416-9936-03CAAEE9C84C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F5F221F-A030-4416-9936-03CAAEE9C84C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{F1CB8CCD-0F70-4616-871C-3F57492C1A7D} = {0973B94E-8055-412F-8E22-310226D70719}
 		{C59555F2-F714-43A2-BFB3-21664A922460} = {365C2B3A-07F7-4118-8FB5-07644981CD41}
 		{2F5F221F-A030-4416-9936-03CAAEE9C84C} = {0973B94E-8055-412F-8E22-310226D70719}
+		{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387} = {365C2B3A-07F7-4118-8FB5-07644981CD41}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60678BCD-1417-4757-B3B2-26637A49ED5E}

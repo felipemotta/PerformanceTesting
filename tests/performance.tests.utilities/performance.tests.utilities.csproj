@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DebugType>pdbonly</DebugType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>DevExperience.Performance.Tests.Utilities</AssemblyName>
+    <RootNamespace>DevExperience.Performance.Tests.Utilities</RootNamespace>
+    <generateassemblyinfo>false</generateassemblyinfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.11.1" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.11.1" />
+  </ItemGroup>
+
+</Project>

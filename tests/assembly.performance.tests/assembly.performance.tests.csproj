@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utilities\" />
+    <ProjectReference Include="..\performance.tests.utilities\performance.tests.utilities.csproj" />
   </ItemGroup>
 
 </Project>

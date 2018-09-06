@@ -1,30 +1,19 @@
 ﻿namespace DevExperience.Assembly.Performance.Tests
 {
-    using System;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Configs;
-    using BenchmarkDotNet.Jobs;
     using BenchmarkDotNet.Reports;
     using BenchmarkDotNet.Running;
     using DevExperience.Assembly.Loader;
-    using FluentAssertions;
+    using DevExperience.Assembly.Performance.Tests.Configs;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class CodeOnEvaluationTest
     {
-        public class Config : ManualConfig
-        {
-            public Config()
-            {
-                this.Add(Job.Clr.WithLaunchCount(1).WithIterationCount(5));
-            }
-        }
-
         [TestMethod]
         public void PerformanceTest()
         {
-            Summary summary = BenchmarkRunner.Run(typeof(StreamWithoutDomains), new Config());
+            Summary summary = BenchmarkRunner.Run(typeof(StreamWithoutDomains), new ConfigFactory().Create());
         }
     }
 

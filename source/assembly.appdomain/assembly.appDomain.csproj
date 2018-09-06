@@ -6,13 +6,18 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <DebugType>pdbonly</DebugType>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>DevExperience.Assembly</AssemblyName>
-    <RootNamespace>DevExperience.Assembly</RootNamespace>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>DevExperience.Assembly.Loader</AssemblyName>
+    <RootNamespace>DevExperience.Assembly.Loader</RootNamespace>
     <generateassemblyinfo>false</generateassemblyinfo>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\assembly\assembly.csproj" />
+  </ItemGroup>
+
 
 </Project>

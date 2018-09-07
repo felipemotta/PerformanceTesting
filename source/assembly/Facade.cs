@@ -6,6 +6,9 @@
     {
         private readonly Existing existing = new Existing();
 
-        public void DoSomething(byte[] array) => this.existing.DoSomething(array);
+        public int DoSomething(byte[] array)
+        {
+            return this.existing.DoSomething(array);
+        }
     }
 }

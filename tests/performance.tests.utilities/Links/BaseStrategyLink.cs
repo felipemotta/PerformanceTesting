@@ -1,6 +1,7 @@
 namespace DevExperience.Performance.Tests.Utilities.Links
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using DevExperience.Performance.Tests.Utilities.Strategies;
 
     public abstract class BaseStrategyLink
@@ -9,11 +10,11 @@ namespace DevExperience.Performance.Tests.Utilities.Links
 
         public void SetSuccessor(BaseStrategyLink next) => this.nextBaseStrategyLink = next;
 
-        public virtual SupportedFrameworks Execute(IReadOnlyCollection<IFrameworkStrategy> strategies)
+        public virtual SupportedFrameworks Execute(IReadOnlyCollection<IFrameworkStrategy> strategies, Assembly callingAssembly)
         {
             if (this.nextBaseStrategyLink != null)
             {
-                return this.nextBaseStrategyLink.Execute(strategies);
+                return this.nextBaseStrategyLink.Execute(strategies, callingAssembly);
             }
 
             return SupportedFrameworks.Unknown;

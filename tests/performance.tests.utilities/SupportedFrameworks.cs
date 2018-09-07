@@ -1,5 +1,8 @@
 namespace DevExperience.Performance.Tests.Utilities
 {
+    /// <summary>
+    /// The supported frameworks to mesure the performance.
+    /// </summary>
     public enum SupportedFrameworks
     {
         Unknown = 0,

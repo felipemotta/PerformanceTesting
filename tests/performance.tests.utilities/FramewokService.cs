@@ -2,7 +2,9 @@ namespace DevExperience.Performance.Tests.Utilities
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
     using DevExperience.Performance.Tests.Utilities.Links;
     using DevExperience.Performance.Tests.Utilities.Strategies;
 
@@ -10,31 +12,34 @@ namespace DevExperience.Performance.Tests.Utilities
     {
         private readonly IReadOnlyCollection<IFrameworkStrategy> frameworkStrategies;
         private readonly BaseStrategyLink benchmarkConfigPerFrameworkChain;
+        private readonly Assembly callingAssembly;
 
-        public FramewokService(IReadOnlyCollection<IFrameworkStrategy> strategies, BaseStrategyLink benchmarkConfigPerFrameworkChain)
+        public FramewokService(
+            IReadOnlyCollection<IFrameworkStrategy> strategies, 
+            BaseStrategyLink benchmarkConfigPerFrameworkChain, 
+            Assembly callingAssembly)
         {
             this.benchmarkConfigPerFrameworkChain = benchmarkConfigPerFrameworkChain;
             this.frameworkStrategies = strategies;
+            this.callingAssembly = callingAssembly;
         }
 
-        public FramewokService() 
-            : this(new List<IFrameworkStrategy> {new NetFrameworkStrategy(), new MonoFrameworkStrategy()}.AsReadOnly(), 
-                BenchmarkConfigPerFrameworkChain())
+        public FramewokService(Assembly callingAssembly) : this(GetDefaultStrategies(), BenchmarkConfigPerFrameworkChain(), callingAssembly)
         {
         }
 
         public SupportedFrameworks ResolveExecutingFrameworkName()
         {
-            var executedFramework = this.benchmarkConfigPerFrameworkChain.Execute(this.frameworkStrategies);
+            var executedFramework = this.benchmarkConfigPerFrameworkChain.Execute(this.frameworkStrategies, this.callingAssembly);
             if (executedFramework != SupportedFrameworks.Unknown)
             {
                 return executedFramework;
             }
 
-            var strategiesResult = this.frameworkStrategies.FirstOrDefault(fs => !string.IsNullOrWhiteSpace(fs.GetFrameworkName()));
+            var strategiesResult = this.frameworkStrategies.FirstOrDefault(fs => !string.IsNullOrWhiteSpace(fs.GetFrameworkName(this.callingAssembly)));
             if (strategiesResult != null)
             {
-                throw new NotSupportedException($"The Framework '{strategiesResult.GetFrameworkName()}' is not supported. Please specify a link in the chain to resolve its becnhmark configuration.");
+                throw new NotSupportedException($"The Framework '{strategiesResult.GetFrameworkName(this.callingAssembly)}' is not supported. Please specify a link in the chain to resolve its becnhmark configuration.");
             }
 
             var strategies = string.Join(Environment.NewLine, this.frameworkStrategies.Select(s => s.GetType()));
@@ -52,10 +57,12 @@ namespace DevExperience.Performance.Tests.Utilities
 
             return chain;
         }
-    }
 
-    public interface IFramewokService
-    {
-        SupportedFrameworks ResolveExecutingFrameworkName();
+        private static ReadOnlyCollection<IFrameworkStrategy> GetDefaultStrategies() 
+            => new List<IFrameworkStrategy>
+            {
+                new NetFrameworkStrategy(),
+                new MonoFrameworkStrategy()
+            }.AsReadOnly();
     }
 }

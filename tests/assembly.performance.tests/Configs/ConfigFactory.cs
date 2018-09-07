@@ -1,6 +1,7 @@
 namespace DevExperience.Assembly.Performance.Tests.Configs
 {
     using System;
+    using System.Reflection;
     using BenchmarkDotNet.Configs;
     using DevExperience.Performance.Tests.Utilities;
 
@@ -8,7 +9,7 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
     {
         public IFramewokService FrameworkService { get; }
 
-        public ConfigFactory() : this(new FramewokService()) {}
+        public ConfigFactory() : this(new FramewokService(Assembly.GetExecutingAssembly())) {}
 
         public ConfigFactory(IFramewokService framewokService) => this.FrameworkService = framewokService;
 

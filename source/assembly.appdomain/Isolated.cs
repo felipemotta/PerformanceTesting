@@ -4,7 +4,7 @@
 
     public sealed class Isolated<T> : IIsolated<T> where T : MarshalByRefObject
     {
-        private AppDomain domain;
+        public AppDomain domain;
 
         public Isolated()
         {

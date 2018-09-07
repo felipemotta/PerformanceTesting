@@ -1,10 +1,15 @@
 ﻿namespace DevExperience.Assembly
 {
+    using System;
+
     public class Existing
     {
-        public void DoSomething(byte[] array)
+        private byte[] otherArray;
+
+        public int DoSomething(byte[] array)
         {
-            var a = array.Length;
+            Array.Copy(array, this.otherArray, array.Length);
+            return array.Length;
         }
     }
 }

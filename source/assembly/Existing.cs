@@ -8,7 +8,7 @@
 
         public int DoSomething(byte[] array)
         {
-            Array.Copy(array, this.otherArray, array.Length);
+            this.otherArray = (byte[])array.Clone();
             return array.Length;
         }
     }

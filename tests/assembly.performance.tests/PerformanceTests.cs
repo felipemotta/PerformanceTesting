@@ -21,22 +21,24 @@
             this.configFactory = new ConfigFactory();
         }
 
-        [TestMethod]
-        public void AccessingToDomainMemoryTest()
-        {
-            AppDomain.MonitoringIsEnabled = true;
-            var isolatedBenchmark = new IsolatedBenchmark();
-            isolatedBenchmark.Act();
+        //[TestMethod]
+        //public void AccessingToDomainMemoryTest()
+        //{
+        //    AppDomain.MonitoringIsEnabled = true;
+        //    var isolatedBenchmark = new IsolatedBenchmark();
+        //    isolatedBenchmark.Act();
 
-            // Memory I get from Benchmark
-            Console.WriteLine("AppDomain MonitoringTotalProcessorTime {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
-            Console.WriteLine("AppDomain MonitoringTotalAllocatedMemorySize {0}", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize);
+        //    // Memory I get from Benchmark
+        //    Console.WriteLine("AppDomain MonitoringTotalProcessorTime {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
+        //    Console.WriteLine("AppDomain MonitoringTotalAllocatedMemorySize {0}", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize);
 
-            // Memory I get from the specific domain
-            Console.WriteLine("isolated MonitoringTotalProcessorTime {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalProcessorTime);
-            Console.WriteLine("isolated MonitoringTotalAllocatedMemorySize {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalAllocatedMemorySize);
-            Console.WriteLine("AppDomain MonitoringSurvivedProcessMemorySize {0}", AppDomain.MonitoringSurvivedProcessMemorySize);
-        }
+        //    // Memory I get from the specific domain
+        //    Console.WriteLine("isolated MonitoringTotalProcessorTime {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalProcessorTime);
+        //    Console.WriteLine("isolated MonitoringTotalAllocatedMemorySize {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalAllocatedMemorySize);
+        //    Console.WriteLine("AppDomain MonitoringSurvivedProcessMemorySize {0}", AppDomain.MonitoringSurvivedProcessMemorySize);
+
+
+        //}
 
         [TestMethod]
         public void IsolatedBenchmarkTest()

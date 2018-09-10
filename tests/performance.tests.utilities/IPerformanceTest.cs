@@ -9,13 +9,11 @@ namespace DevExperience.Performance.Tests.Utilities
 
     public interface IPerformanceTest : IPerformanceTestBase
     {
-        [Benchmark]
         void Act();
     }
 
     public interface IPerformanceTest<out T> : IPerformanceTestBase
     {
-        [Benchmark]
         T Act();
     }
 }

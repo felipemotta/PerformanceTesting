@@ -6,14 +6,14 @@
 
     public class IsolatedBenchmark : IPerformanceTest
     {
-        private byte[] array;
+        private MyArray array;
         public Isolated<Facade> Isolated;
 
         public IsolatedBenchmark() => this.Arrange();
 
         public void Arrange()
         {
-            this.array = new byte[200 * 1024 * 1024];
+            this.array = new  MyArray(new byte[200 * 1024 * 1024]);
         }
 
         [Benchmark]

@@ -5,14 +5,14 @@
 
     public class ExistingWithEmpyDataBenchmark : IPerformanceTest
     {
-        private byte[] array;
+        private MyArray array;
         private Existing existing;
 
         public ExistingWithEmpyDataBenchmark() => this.Arrange();
 
         public void Arrange()
         {
-            this.array = new byte[0];
+            this.array = new MyArray(new byte[0]);
             this.existing = new Existing();
         }
 

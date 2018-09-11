@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace DevExperience.Assembly.Performance.Tests
+namespace DevExperience.Performance.Tests.Utilities
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace DevExperience.Assembly.Performance.Tests
         {
             var startingMemory = Process.GetCurrentProcess().WorkingSet64;
 
-            while (!Finished)
+            while (!this.Finished)
             {
                 //this.measuredMemoryConsumption.Add(Process.GetCurrentProcess().WorkingSet64 - startingMemory);
 
@@ -33,10 +33,7 @@ namespace DevExperience.Assembly.Performance.Tests
             }
         }
 
-        public void Stop()
-        {
-            this.Finished = true;
-        }
+        public void Stop() => this.Finished = true;
 
         public IReadOnlyCollection<double> GetMeasuredTime()
         {

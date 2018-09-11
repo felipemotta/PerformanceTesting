@@ -1,16 +1,11 @@
 ﻿namespace DevExperience.Assembly.Performance.Tests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
     using System.Threading;
     using BenchmarkDotNet.Reports;
     using BenchmarkDotNet.Running;
-    using DevExperience.Assembly.Loader;
     using DevExperience.Assembly.Performance.Tests.Configs;
-    using FluentAssertions;
+    using DevExperience.Performance.Tests.Utilities;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

@@ -4,12 +4,12 @@
     using DevExperience.Assembly.Loader;
     using DevExperience.Performance.Tests.Utilities;
 
-    public class IsolatedBenchmark : IPerformanceTest
+    public class IsolatedBenchmarkTest : IPerformanceTest
     {
         private MyArray array;
         public Isolated<Facade> Isolated;
 
-        public IsolatedBenchmark() => this.Arrange();
+        public IsolatedBenchmarkTest() => this.Arrange();
 
         public void Arrange()
         {
@@ -21,7 +21,7 @@
         {
             using (this.Isolated = new Isolated<Facade>())
             {
-                this.Isolated.Value.DoSomething(this.array);
+                this.Isolated.DomainInstance.DoSomething(this.array);
             }
         }
     }

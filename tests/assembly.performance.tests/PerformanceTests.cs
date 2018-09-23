@@ -6,6 +6,7 @@
     using BenchmarkDotNet.Running;
     using DevExperience.Assembly.Performance.Tests.Configs;
     using DevExperience.Performance.Tests.Utilities;
+    using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -23,10 +24,13 @@
         [TestMethod]
         public void AccessingToDomainMemoryTest()
         {
-            AppDomain.MonitoringIsEnabled = true;
-            var isolatedBenchmark = new IsolatedBenchmark();
+            // Arrange
+            var isolatedBenchmark = new IsolatedBenchmarkTest();
+
+            // Act
             isolatedBenchmark.Act();
 
+            // Assert
             // Memory I get from Benchmark
             Console.WriteLine("AppDomain MonitoringTotalProcessorTime {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
             Console.WriteLine("AppDomain MonitoringTotalAllocatedMemorySize {0}", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize);
@@ -40,41 +44,61 @@
         [TestMethod]
         public void IsolatedMemoryTest()
         {
-            var testcase = new IsolatedBenchmark();
+            // Arrange
+            var testcase = new IsolatedBenchmarkTest();
             testcase.Arrange();
 
             var memoryWatcher = new MemoryWatcher();
+
+            // Act
             memoryWatcher.Start(TimeSpan.FromMilliseconds(10));
-
             testcase.Act();
-
-            //var arr = new byte [200 * 1024 * 1024];
-
-            //Console.WriteLine($"Arr length: {arr.Length}");
-
             memoryWatcher.Stop();
-            
-            Thread.Sleep(1000);
-
+           
+            // Assert
             Console.WriteLine(string.Join("\r\n", memoryWatcher.GetMeasuredTime()));
         }
 
         [TestMethod]
         public void IsolatedBenchmarkTest()
         {
-            Summary summary = BenchmarkRunner.Run(typeof(IsolatedBenchmark), this.configFactory.Create());
+            // Arrange
+            var testCaseType = typeof(IsolatedBenchmarkTest);
+            var benchmarkConfig = this.configFactory.Create();
+            
+            // Act
+            Summary summary = BenchmarkRunner.Run(testCaseType, benchmarkConfig);
+
+            // Assert
+            summary.Should().NotBeNull();
         }
 
         [TestMethod]
         public void ExistingBenchmarkTest()
         {
-            Summary summary = BenchmarkRunner.Run(typeof(ExistingBenchmark), this.configFactory.Create());
+            // Arrange
+            var testCaseType = typeof(ExistingBenchmarkTest);
+            var benchmarkConfig = this.configFactory.Create();
+            
+            // Act
+            Summary summary = BenchmarkRunner.Run(testCaseType, benchmarkConfig);
+
+            // Assert
+            summary.Should().NotBeNull();
         }
 
         [TestMethod]
         public void ExistingWithEmpyDataBenchmarkTest()
         {
-            Summary summary = BenchmarkRunner.Run(typeof(ExistingWithEmpyDataBenchmark), this.configFactory.Create());
+            // Arrange
+            var testCaseType = typeof(ExistingWithEmpyDataBenchmarkTest);
+            var benchmarkConfig = this.configFactory.Create();
+
+            // Act
+            Summary summary = BenchmarkRunner.Run(testCaseType, benchmarkConfig);
+
+            // Assert
+            summary.Should().NotBeNull();
         }
     }
 }

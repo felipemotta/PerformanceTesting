@@ -1,4 +1,4 @@
-namespace DevExperience.Performance.Tests.Utilities
+    namespace DevExperience.Performance.Tests.Utilities
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,8 @@ namespace DevExperience.Performance.Tests.Utilities
             this.callingAssembly = callingAssembly;
         }
 
-        public FramewokService(Assembly callingAssembly) : this(GetDefaultStrategies(), BenchmarkConfigPerFrameworkChain(), callingAssembly)
+        public FramewokService(Assembly callingAssembly) 
+            : this(GetDefaultStrategies(), BenchmarkConfigPerFrameworkChain(), callingAssembly)
         {
         }
 

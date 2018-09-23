@@ -3,12 +3,12 @@
     using BenchmarkDotNet.Attributes;
     using DevExperience.Performance.Tests.Utilities;
 
-    public class ExistingBenchmark : IPerformanceTest
+    public class ExistingBenchmarkTest : IPerformanceTest
     {
         private MyArray array;
         private Existing existing;
 
-        public ExistingBenchmark() => this.Arrange();
+        public ExistingBenchmarkTest() => this.Arrange();
 
         public void Arrange()
         {

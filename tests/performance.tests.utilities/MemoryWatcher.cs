@@ -23,8 +23,6 @@ namespace DevExperience.Performance.Tests.Utilities
 
             while (!this.Finished)
             {
-                //this.measuredMemoryConsumption.Add(Process.GetCurrentProcess().WorkingSet64 - startingMemory);
-
                 await Task.Run(() =>
                  {
                      this.measuredMemoryConsumption.Add(Process.GetCurrentProcess().WorkingSet64 - startingMemory);

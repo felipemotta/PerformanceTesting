@@ -4,6 +4,6 @@
 
     public interface IIsolated<out T> : IDisposable
     {
-        T Value { get; }
+        T DomainInstance { get; }
     }
 }

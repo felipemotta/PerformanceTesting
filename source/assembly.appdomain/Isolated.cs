@@ -8,14 +8,14 @@
 
         public Isolated()
         {
-            this.domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(), null, AppDomain.CurrentDomain.SetupInformation);
+            this.domain = AppDomain.CreateDomain($"Isolated:{Guid.NewGuid()}", null, AppDomain.CurrentDomain.SetupInformation);
 
-            Type type = typeof(T);
+            var type = typeof(T);
 
-            this.Value = (T)this.domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
+            this.DomainInstance = (T) this.domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
         }
 
-        public T Value { get; }
+        public T DomainInstance { get; }
 
         public void Dispose()
         {

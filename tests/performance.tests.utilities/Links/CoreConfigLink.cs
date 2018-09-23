@@ -1,9 +1,9 @@
-namespace DevExperience.Performance.Tests.Utilities.Links
+namespace DevExperience.Assembly.Performance.Tests.Utilities.Links
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using DevExperience.Performance.Tests.Utilities.Strategies;
+    using DevExperience.Assembly.Performance.Tests.Utilities.Strategies;
 
     public class CoreConfigLink : BaseStrategyLink
     {

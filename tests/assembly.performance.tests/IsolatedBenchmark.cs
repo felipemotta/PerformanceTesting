@@ -2,7 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using DevExperience.Assembly.Loader;
-    using DevExperience.Performance.Tests.Utilities;
+    using DevExperience.Assembly.Performance.Tests.Utilities;
 
     public class IsolatedBenchmarkTest : IPerformanceTest
     {

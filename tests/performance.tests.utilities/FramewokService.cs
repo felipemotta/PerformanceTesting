@@ -1,12 +1,12 @@
-    namespace DevExperience.Performance.Tests.Utilities
+    namespace DevExperience.Assembly.Performance.Tests.Utilities
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using DevExperience.Performance.Tests.Utilities.Links;
-    using DevExperience.Performance.Tests.Utilities.Strategies;
+    using DevExperience.Assembly.Performance.Tests.Utilities.Links;
+    using DevExperience.Assembly.Performance.Tests.Utilities.Strategies;
 
     public class FramewokService : IFramewokService
     {

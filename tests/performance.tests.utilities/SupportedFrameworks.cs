@@ -1,4 +1,4 @@
-namespace DevExperience.Performance.Tests.Utilities
+namespace DevExperience.Assembly.Performance.Tests.Utilities
 {
     /// <summary>
     /// The supported frameworks to mesure the performance.

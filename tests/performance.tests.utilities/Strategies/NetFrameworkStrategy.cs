@@ -1,4 +1,4 @@
-namespace DevExperience.Performance.Tests.Utilities.Strategies
+namespace DevExperience.Assembly.Performance.Tests.Utilities.Strategies
 {
     using System;
     using System.Reflection;

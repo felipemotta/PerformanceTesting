@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace DevExperience.Performance.Tests.Utilities
+namespace DevExperience.Assembly.Performance.Tests.Utilities
 {
     using System;
     using System.Collections.Generic;

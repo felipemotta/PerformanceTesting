@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assembly.performance.tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assembly.appdomain", "source\assembly.appdomain\assembly.appdomain.csproj", "{2F5F221F-A030-4416-9936-03CAAEE9C84C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "performance.tests.utilities", "tests\performance.tests.utilities\performance.tests.utilities.csproj", "{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "assembly.performance.tests.utilities", "tests\performance.tests.utilities\assembly.performance.tests.utilities.csproj", "{F96CF4D8-09A8-4FDE-AC2F-6EF31EE1D387}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,7 @@
     using BenchmarkDotNet.Reports;
     using BenchmarkDotNet.Running;
     using DevExperience.Assembly.Performance.Tests.Configs;
-    using DevExperience.Performance.Tests.Utilities;
+    using DevExperience.Assembly.Performance.Tests.Utilities;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

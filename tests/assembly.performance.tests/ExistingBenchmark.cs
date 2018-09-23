@@ -1,7 +1,7 @@
 ﻿namespace DevExperience.Assembly.Performance.Tests
 {
     using BenchmarkDotNet.Attributes;
-    using DevExperience.Performance.Tests.Utilities;
+    using DevExperience.Assembly.Performance.Tests.Utilities;
 
     public class ExistingBenchmarkTest : IPerformanceTest
     {

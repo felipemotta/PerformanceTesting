@@ -10,8 +10,8 @@
   <PropertyGroup>
     <DebugType>pdbonly</DebugType>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>DevExperience.Performance.Tests.Utilities</AssemblyName>
-    <RootNamespace>DevExperience.Performance.Tests.Utilities</RootNamespace>
+    <AssemblyName>DevExperience.Assembly.Performance.Tests.Utilities</AssemblyName>
+    <RootNamespace>DevExperience.Assembly.Performance.Tests.Utilities</RootNamespace>
     <generateassemblyinfo>false</generateassemblyinfo>
   </PropertyGroup>
 

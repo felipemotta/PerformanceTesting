@@ -3,7 +3,7 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
     using System;
     using System.Reflection;
     using BenchmarkDotNet.Configs;
-    using DevExperience.Performance.Tests.Utilities;
+    using DevExperience.Assembly.Performance.Tests.Utilities;
 
     public class ConfigFactory
     {

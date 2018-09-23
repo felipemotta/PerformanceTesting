@@ -2,7 +2,7 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
 {
     using BenchmarkDotNet.Environments;
     using BenchmarkDotNet.Jobs;
-    using DevExperience.Performance.Tests.Utilities;
+    using DevExperience.Assembly.Performance.Tests.Utilities;
 
     public class ClrConfig : BaseConfig
     {

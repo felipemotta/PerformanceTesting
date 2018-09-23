@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\performance.tests.utilities\performance.tests.utilities.csproj" />
+    <ProjectReference Include="..\performance.tests.utilities\assembly.performance.tests.utilities.csproj" />
   </ItemGroup>
 
 </Project>

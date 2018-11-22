@@ -13,6 +13,6 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
                 .WithIterationCount(iterationCount)
                 .WithId(SupportedFrameworks.Mono.ToString()));
 
-        public MonoConfig() : this(launchCount: 1, iterationCount: 5) { }
+        public MonoConfig() : this(launchCount: 0, iterationCount: 1) { }
     }
 }

@@ -13,6 +13,6 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
                 .WithIterationCount(iterationCount)
                 .WithId(SupportedFrameworks.Clr.ToString()));
 
-        public ClrConfig() : this(launchCount: 1, iterationCount: 5) { }
+        public ClrConfig() : this(launchCount: 0, iterationCount: 1) { }
     }
 }

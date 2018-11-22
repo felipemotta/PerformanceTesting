@@ -16,7 +16,7 @@ namespace DevExperience.Assembly.Performance.Tests.Configs
                 .WithId(SupportedFrameworks.Core.ToString())
                 .AsBaseline());
 
-        public CoreConfig() : this(launchCount: 1, iterationCount: 5) { }
+        public CoreConfig() : this(launchCount: 0, iterationCount: 1) { }
 
     }
 }

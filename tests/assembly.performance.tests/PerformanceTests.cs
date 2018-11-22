@@ -1,7 +1,6 @@
 ﻿namespace DevExperience.Assembly.Performance.Tests
 {
     using System;
-    using System.Threading;
     using BenchmarkDotNet.Reports;
     using BenchmarkDotNet.Running;
     using DevExperience.Assembly.Performance.Tests.Configs;
@@ -32,35 +31,38 @@
 
             // Assert
             // Memory I get from Benchmark
-            Console.WriteLine("AppDomain MonitoringTotalProcessorTime {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
-            Console.WriteLine("AppDomain MonitoringTotalAllocatedMemorySize {0}", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize);
+            Console.WriteLine($"AppDomain MonitoringTotalProcessorTime {AppDomain.CurrentDomain.MonitoringTotalProcessorTime}");
+            Console.WriteLine($"AppDomain MonitoringTotalAllocatedMemorySize {AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize}");
 
             // Memory I get from the specific domain
-            Console.WriteLine("isolated MonitoringTotalProcessorTime {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalProcessorTime);
-            Console.WriteLine("isolated MonitoringTotalAllocatedMemorySize {0}", isolatedBenchmark.Isolated.domain.MonitoringTotalAllocatedMemorySize);
-            Console.WriteLine("AppDomain MonitoringSurvivedProcessMemorySize {0}", AppDomain.MonitoringSurvivedProcessMemorySize);
+            Console.WriteLine($"isolated MonitoringTotalProcessorTime {isolatedBenchmark.Isolated.domain.MonitoringTotalProcessorTime}");
+            Console.WriteLine($"isolated MonitoringTotalAllocatedMemorySize {isolatedBenchmark.Isolated.domain.MonitoringTotalAllocatedMemorySize}");
+            Console.WriteLine($"AppDomain MonitoringSurvivedProcessMemorySize {AppDomain.MonitoringSurvivedProcessMemorySize}");
+
+            isolatedBenchmark.Dispose();
         }
 
         [TestMethod]
-        public void IsolatedMemoryTest()
+        public void Benchmarking_MemoryWatcher_IsolatedMemoryTest()
         {
             // Arrange
-            var testcase = new IsolatedBenchmarkTest();
-            testcase.Arrange();
+            var isolatedBenchmark = new IsolatedBenchmarkTest();
+            isolatedBenchmark.Arrange();
 
-            var memoryWatcher = new MemoryWatcher();
+            IMemoryWatcher memoryWatcher = new MemoryWatcher();
 
             // Act
             memoryWatcher.Start(TimeSpan.FromMilliseconds(10));
-            testcase.Act();
+            isolatedBenchmark.Act();
             memoryWatcher.Stop();
            
             // Assert
-            Console.WriteLine(string.Join("\r\n", memoryWatcher.GetMeasuredTime()));
+            Console.WriteLine(string.Join(Environment.NewLine, memoryWatcher.GetMeasuredMemory()));
+            isolatedBenchmark.Dispose();
         }
 
         [TestMethod]
-        public void IsolatedBenchmarkTest()
+        public void Benchmarking_BenchmarkRunner_IsolatedBenchmarkTest()
         {
             // Arrange
             var testCaseType = typeof(IsolatedBenchmarkTest);
@@ -74,7 +76,7 @@
         }
 
         [TestMethod]
-        public void ExistingBenchmarkTest()
+        public void Benchmarking_BenchmarkRunner_ExistingBenchmarkTest()
         {
             // Arrange
             var testCaseType = typeof(ExistingBenchmarkTest);
@@ -88,7 +90,7 @@
         }
 
         [TestMethod]
-        public void ExistingWithEmpyDataBenchmarkTest()
+        public void Benchmarking_BenchmarkRunner_ExistingWithEmpyDataBenchmarkTest()
         {
             // Arrange
             var testCaseType = typeof(ExistingWithEmpyDataBenchmarkTest);
